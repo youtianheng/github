@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nexus
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nexus
+  template:
+    metadata:
+      labels:
+        app: nexus
+    spec:
+      containers:
+      - name: nexus
+        image: dockerproxy.net/sonatype/nexus3:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8081
+        volumeMounts:
+        - name: nexus-data
+          mountPath: /nexus-data/
+      volumes:
+      - name: nexus-data
+        hostPath:
+          path: /date/k8s/nexus-data
+      nodeSelector:
+        kubernetes.io/hostname: node1.y2410.com

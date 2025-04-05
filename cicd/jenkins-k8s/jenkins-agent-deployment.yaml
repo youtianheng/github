@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jenkins-agent
+  namespace: devops-tools
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jenkins-agent
+  template:
+    metadata:
+      labels:
+        app: jenkins-agent
+    spec:
+      containers:
+      - name: jenkins-agent
+        image: jenkins/inbound-agent
+        args:
+        - "-url"
+        - "http://jenkins-service:8080"
+        - "-workDir"
+        - "/home/jenkins/agent"
+        - "98a72b6153f0b7006b115179146ce6483b0917ba77f649ee54d44904cfca8eb0"
+        - "slave"
+        volumeMounts:
+        - name: agent-workdir
+          mountPath: /home/jenkins/agent
+      volumes:
+      - name: agent-workdir
+        emptyDir: {}

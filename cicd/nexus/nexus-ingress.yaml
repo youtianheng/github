@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nexus-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: "0"  # 允许上传大文件
+spec:
+  ingressClassName: nginx  
+  rules:
+  - host: nexus.y2410.com  # 替换为你的域名
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: nexus-service
+            port:
+              number: 8081
